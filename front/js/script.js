@@ -1,12 +1,19 @@
 //Retreiving Data from API
 
-const getProducts = fetch ("http://localhost:3000/api/products");
+  const getProducts = fetch ("http://localhost:3000/api/products")
+  .then((res) => {
+    return res.json
+  })
+  .catch(err => console.log("Oh no", err));
 
-async function retrieveInfo (url){
+ 
+
+  async function retrieveInfo (url){
   const getProducts = await fetch (url);
   let websiteData = getProducts.json();
   console.log(websiteData);
 }
+
 
 //Processing data from API
 
@@ -34,8 +41,8 @@ const nameOfProducts = [
   imageUrl: "http://localhost:3000/images/kanap03.jpeg",
   name: "Kanap Calycé",
   price: 3199,
-  _id: "055743915a544fde83cfdfc904935ee7",
-  }, 
+  _id: "055743915a544fde83cfdfc904935ee7"}, 
+
   {altTxt: "Photo d'un canapé rose, une à deux place",
   colors: ["Pink", "White"],
   description: "Donec mattis nisl tortor, nec blandit sapien fermentum at. Proin hendrerit efficitur fringilla. Lorem ipsum dolor sit amet.",
