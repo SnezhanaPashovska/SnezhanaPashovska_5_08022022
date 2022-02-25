@@ -6,6 +6,17 @@ const getProducts = fetch ("http://localhost:3000/api/products")
 })
 .catch(err => console.log("Oh no", err));
 
+
+//URL searsh params
+
+let params = new URLSearchParams("http://localhost:3000/api/products");
+let str = window.location.href;
+let url = new URL(str);
+let productInfo = url.searchParams.getAll("products"["imageURL", "name", "description"]);
+let productId = url.searchParams.get("id");
+console.log(productId);
+
+
 //Processing data from API
 
 const numberOfProducts = 8;
@@ -25,7 +36,7 @@ linkOfProduct.appendChild(articleElement);
 
 //Image of the product
 let imageOfProduct = document.createElement("img");
-
+imageOfProduct.src = productInfo["imageURL"];
 
 
 //Name of the product
