@@ -17,7 +17,7 @@ if(params.has('products')) {
   var name = params.get('products');
   console.log(name)
 } else {
-  console.log("not found");
+  console.log("error");
 }
 
 
