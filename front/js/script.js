@@ -1,5 +1,4 @@
 //Retreiving Data from API
-
 const getProducts = fetch ("http://localhost:3000/api/products")
 .then((res) => {
   return res.json
@@ -8,26 +7,30 @@ const getProducts = fetch ("http://localhost:3000/api/products")
 
 
 //URL searsh params
-
 let params = new URLSearchParams("http://localhost:3000/api/products");
 let str = window.location.href;
 let url = new URL(str);
-let productInfo = url.searchParams.getAll("products"["imageURL", "name", "description"]);
+let productInfo = url.searchParams.getAll("products");
 let productId = url.searchParams.get("id");
 console.log(productId);
+if(params.has('products')) {
+  var name = params.get('products');
+  console.log(name)
+} else {
+  console.log("not found");
+}
 
 
 //Processing data from API
-
 const numberOfProducts = 8;
 for (let i = 0; i < numberOfProducts; i++){
-  console.log("The products");
+  console.log("");
 
 //Link of the product
 let linkOfProduct = document.createElement("a");
 let section = document.getElementById("items");
 section.appendChild(linkOfProduct);
-linkOfProduct.href = "http://localhost:3000/api/products";
+linkOfProduct.href = "";
 
 //Element article
 let articleElement = document.createElement("article");
@@ -36,7 +39,7 @@ linkOfProduct.appendChild(articleElement);
 
 //Image of the product
 let imageOfProduct = document.createElement("img");
-imageOfProduct.src = productInfo["imageURL"];
+
 
 
 //Name of the product
@@ -51,21 +54,6 @@ productDescription.classList.add("productDescription");
 articleElement.append(imageOfProduct, productName, productDescription);
 
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
