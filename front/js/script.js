@@ -6,21 +6,6 @@ const getProducts = fetch ("http://localhost:3000/api/products")
 .catch(err => console.log("Oh no", err));
 
 
-//URL searsh params
-let params = new URLSearchParams("http://localhost:3000/api/products");
-let str = window.location.href;
-let url = new URL(str);
-let productInfo = url.searchParams.getAll("products");
-let productId = url.searchParams.get("id");
-console.log(productId);
-if(params.has('products')) {
-  var name = params.get('products');
-  console.log(name)
-} else {
-  console.log("error");
-}
-
-
 //Processing data from API
 const numberOfProducts = 8;
 for (let i = 0; i < numberOfProducts; i++){
@@ -30,7 +15,7 @@ for (let i = 0; i < numberOfProducts; i++){
 let linkOfProduct = document.createElement("a");
 let section = document.getElementById("items");
 section.appendChild(linkOfProduct);
-linkOfProduct.href = "";
+linkOfProduct.href = "http://localhost:3000/api/products/?id=";
 
 //Element article
 let articleElement = document.createElement("article");
@@ -39,33 +24,27 @@ linkOfProduct.appendChild(articleElement);
 
 //Image of the product
 let imageOfProduct = document.createElement("img");
-
+imageOfProduct.src = "http://localhost:3000/api/products/?imageURL=";
+imageOfProduct.alt = "";
 
 
 //Name of the product
 let productName = document.createElement("h3");
 productName.classList.add("productName");
+productName.textContent ="";
 
 
 //Description of the product
 let productDescription = document.createElement("p");
 productDescription.classList.add("productDescription");
+productDescription.textContent = "";
 
 articleElement.append(imageOfProduct, productName, productDescription);
 
 };
 
 
-
-
-
-
-//
-
-
 class myClass{};
-
-let tableauVide = [];
 
 
 
