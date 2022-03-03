@@ -1,50 +1,61 @@
 //Retreiving Data from API
 const getProducts = fetch ("http://localhost:3000/api/products")
-.then((res) => {
-  return res.json
+  .then(function(res){
+  if(res.ok){
+      return res.json();
+  }
 })
-.catch(err => console.log("Oh no", err));
+//Processing data from API - forEach method to loop through arrays with 'articles' callback function. The function is executed for every single element of the array.
+
+  .then(function(articles){
+    articles.forEach(products =>{
+
+      const theProduct = document.getElementById("items");
+      theProduct.innerHTML += `
+          <a href="./product.html?id=${products._id}">
+            <article>
+              <img src="${products.imageUrl}" alt="${products.altTxt}">
+              <h3 class="productName">${products.name}</h3>
+              <p class="productDescription">${products.description}</p>
+            </article>
+          </a>`;
+    });
+    console.log(articles);
+  })
+  .catch(err => console.log("Error", err));
+  
+
+      
+
+    
 
 
-//Processing data from API
-const numberOfProducts = 8;
-for (let i = 0; i < numberOfProducts; i++){
-  console.log("");
 
-//Link of the product
-let linkOfProduct = document.createElement("a");
-let section = document.getElementById("items");
-section.appendChild(linkOfProduct);
-linkOfProduct.href = "http://localhost:3000/api/products/?id=";
+//class products {
+ // constructor (imageUrl, altTxt, name, description){
+   // this.image = imageUrl;
+    //this.alt = altTxt;
+    //this.name = name;
+    //this.description = description;
+  //} 
+//};
 
-//Element article
-let articleElement = document.createElement("article");
-let article = document.getElementById("items");
-linkOfProduct.appendChild(articleElement);
+//let myProducts = new products(imageUrl, altTxt, name, description);{
+ // imageUrl: "http://localhost:3000/api/products/"+imageUrl;
+ // altTxt: "";
+  //name: "";
+  //description: ""
+//}
 
-//Image of the product
-let imageOfProduct = document.createElement("img");
-imageOfProduct.src = "http://localhost:3000/api/products/?imageURL=";
-imageOfProduct.alt = "";
-
-
-//Name of the product
-let productName = document.createElement("h3");
-productName.classList.add("productName");
-productName.textContent ="";
-
-
-//Description of the product
-let productDescription = document.createElement("p");
-productDescription.classList.add("productDescription");
-productDescription.textContent = "";
-
-articleElement.append(imageOfProduct, productName, productDescription);
-
-};
-
-
-class myClass{};
+//let products = {
+  //altTxt: "",
+  //colors: [""],
+  //description: "",
+  //imageUrl: "",
+  //name: "",
+  //price: 0,
+  //_id: ""
+//}; 
 
 
 

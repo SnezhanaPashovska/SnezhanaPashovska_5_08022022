@@ -1,34 +1,58 @@
 let params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-const url = "http://localhost:3000/api/products/"+id;
-fetch(url)
-    .then(function(res){
-        if(res.ok){
-            return res.json();
+var str = ("http://localhost:3000/api/products");
+var url = new URL(str);
+var id = params.get("id");
+
+const productId = fetch(url)
+    .then(function(products){
+        if(products.ok){
+            return products.json();
         }
     })
 
+//Processing data from API
+    .then(function (products){
 
-.then(function (products) {
+        //Image
+        let item = document.getElementsByClassName("imgId");
+        item.innerHTML += `
+            <img src="${products.imageUrl}" alt="${products.altTxt}">`;
 
-let imageId = document.createElement("img");
-let img = document.getElementById("imgId");
-img.appendChild(imageId);
-imageId.classList.add("productImage");
-imageId.src = products.imageUrl;
-imageId.alt = products.altTxt;
+        //Title
+        let title = document.getElementById("title");
+        title.innerHTML += `${products.name}`;
+
+        //Price
+        let price = document.getElementById("price");
+        price.innerHTML += `${products.price}`;
+
+        //Description
+        let description = document.getElementById("description");
+        description.innerHTML += `${products.description}`;
+
+        //Color option
+        function colors(product){
+        colors.forEach(products =>{
+        let colors = document.getElementById("colors");
+        colors.innerHTML += `
+        <option>${products.colors}</option>`;
+        })}
+        console.log(products);   
+    })
+.catch(err => console.log("Error", err));
+console.log(params);
+console.log(str);
+console.log(url);
+console.log(id);
+console.log(productId);
 
 
-let nameOfProduct = document.getElementById("title");
-nameOfProduct.textContent = products.name;
-
-let priceOfProduct = document.getElementById("price");
-priceOfProduct.textContent = products.price;
-
-let descriptionOfProduct = document.getElementById("description");
-descriptionOfProduct.textContent = products.description;
-
-let colorOfProduct = document.getElementById("color");
-colorOfProduct.textContent = products.color;
-
-});
+//let products = {
+   // altTxt: "",
+    //colors: [""],
+    //description: "",
+    //imageUrl: "",
+    //name: "",
+    //price: 0,
+    //_id: ""
+  //};
