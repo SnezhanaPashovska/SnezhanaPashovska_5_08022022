@@ -1,20 +1,31 @@
-let params = new URLSearchParams(window.location.search);
-var str = ("http://localhost:3000/api/products");
-var url = new URL(str);
-var id = params.get("id");
 
-const productId = fetch(url)
-    .then(function(products){
-        if(products.ok){
-            return products.json();
+
+const queryStringUrlId = window.location.search;
+console.log(queryStringUrlId);
+
+const theId = queryStringUrlId.slice(4);
+console.log(theId);
+
+const params = new URLSearchParams(queryStringUrlId);
+console.log(params);
+
+const id = params.get("id");
+
+let products = fetch(`http://localhost:3000/api/products/${id}`)
+
+
+    .then(function(res){
+        if(res.ok){
+            return res.json();
         }
     })
+    
 
 //Processing data from API
-    .then(function (products){
+    .then (function (products){
 
         //Image
-        let item = document.getElementsByClassName("imgId");
+        let item = document.getElementById("imgId");
         item.innerHTML += `
             <img src="${products.imageUrl}" alt="${products.altTxt}">`;
 
@@ -35,24 +46,23 @@ const productId = fetch(url)
         colors.forEach(products =>{
         let colors = document.getElementById("colors");
         colors.innerHTML += `
-        <option>${products.colors}</option>`;
+        <option value ="">${products.colors}</option>`;
         })}
         console.log(products);   
+
     })
 .catch(err => console.log("Error", err));
-console.log(params);
-console.log(str);
-console.log(url);
-console.log(id);
-console.log(productId);
 
 
-//let products = {
-   // altTxt: "",
-    //colors: [""],
-    //description: "",
-    //imageUrl: "",
-    //name: "",
-    //price: 0,
-    //_id: ""
+//let product = {
+    //colors: [`${products.colors}`],
+   // description: `${products.description}`,
+    //imageUrl: `${products.imageUrl}`,
+    //name: `${products.name}`,
+    //price: `${products.price}`,
+    //_id: `${products._id}`
   //};
+
+
+
+
