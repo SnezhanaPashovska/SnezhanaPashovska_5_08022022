@@ -1,7 +1,4 @@
-
-
 const queryStringUrlId = window.location.search;
-console.log(queryStringUrlId);
 
 const theId = queryStringUrlId.slice(4);
 console.log(theId);
@@ -10,9 +7,10 @@ const params = new URLSearchParams(queryStringUrlId);
 console.log(params);
 
 const id = params.get("id");
+const selectedColor = document.querySelector("#colors");
+const selectedQuantity = document.querySelector("#quantity");
 
 let products = fetch(`http://localhost:3000/api/products/${id}`)
-
 
     .then(function(res){
         if(res.ok){
@@ -21,11 +19,11 @@ let products = fetch(`http://localhost:3000/api/products/${id}`)
     })
     
 
-//Processing data from API
+//----------------------------Processing data from API----------------------------------------------//
     .then (function (products){
 
         //Image
-        let item = document.getElementById("imgId");
+        let item = document.querySelector(".item__img");
         item.innerHTML += `
             <img src="${products.imageUrl}" alt="${products.altTxt}">`;
 
@@ -42,26 +40,66 @@ let products = fetch(`http://localhost:3000/api/products/${id}`)
         description.innerHTML += `${products.description}`;
 
         //Color option
-        function colors(product){
-        colors.forEach(products =>{
-        let colors = document.getElementById("colors");
-        colors.innerHTML += `
-        <option value ="">${products.colors}</option>`;
-        })}
-        console.log(products);   
+        for (let i = 0; i < products.colors.length; i++) {
+            colorOption = document.getElementById("colors");
+            colorOption.innerHTML += `
+            <option value="${products.colors[i]}">${products.colors[i]}</option>`;
+          }
 
+       //console.log(products);  
+         
     })
 .catch(err => console.log("Error", err));
 
 
-//let product = {
-    //colors: [`${products.colors}`],
-   // description: `${products.description}`,
-    //imageUrl: `${products.imageUrl}`,
-    //name: `${products.name}`,
-    //price: `${products.price}`,
-    //_id: `${products._id}`
-  //};
+//------------------------------- Add items in cart ---------------------------------------------------//
+
+const addToCart = document.querySelector("#addToCart");
+addToCart.addEventListener("click", (e)=>{
+    e.preventDefault();
+    const formId = document.querySelector("#colors");
+
+    const formOption = formId.options;
+
+    let productOptions = {
+        id: id,
+        quantity: selectedQuantity.value,
+        color: selectedColor.value
+      };
+
+      console.log(productOptions);
+
+//---------------------------------------- Local Storage --------------------------------------------//
+
+let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
+//JSON.parse to convert data in JSON format in the Local storage that is in java script object
+
+const addProductInLocalStorage = () => {
+    productsInLocalStorage.push(productOptions);
+    localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
+};
+
+if(productsInLocalStorage){
+    addProductInLocalStorage();
+}
+else{
+    productsInLocalStorage = [];
+    addProductInLocalStorage();
+     
+}
+    
+});
+
+
+
+
+
+
+
+
+
+
+  
 
 
 
