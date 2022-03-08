@@ -20,8 +20,8 @@ const getProducts = fetch ("http://localhost:3000/api/products")
             </article>
           </a>`;
     });
-    console.log(articles);
-    console.log(getProducts);
+    // console.log(articles);
+    // console.log(getProducts);
   })
   .catch(err => console.log("Error", err));
   

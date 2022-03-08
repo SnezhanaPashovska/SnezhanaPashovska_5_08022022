@@ -9,6 +9,7 @@ console.log(params);
 const id = params.get("id");
 const selectedColor = document.querySelector("#colors");
 const selectedQuantity = document.querySelector("#quantity");
+//console.log(id);
 
 let products = fetch(`http://localhost:3000/api/products/${id}`)
 
@@ -17,8 +18,6 @@ let products = fetch(`http://localhost:3000/api/products/${id}`)
             return res.json();
         }
     })
-    
-
 //----------------------------Processing data from API----------------------------------------------//
     .then (function (products){
 
@@ -50,6 +49,9 @@ let products = fetch(`http://localhost:3000/api/products/${id}`)
          
     })
 .catch(err => console.log("Error", err));
+//const idSelectedProduct = products.find((Element) => Element.id === _id);
+//console.log(idSelectedProduct);
+
 
 
 //------------------------------- Add items in cart ---------------------------------------------------//
@@ -58,16 +60,25 @@ const addToCart = document.querySelector("#addToCart");
 addToCart.addEventListener("click", (e)=>{
     e.preventDefault();
     const formId = document.querySelector("#colors");
-
+    // console.log(formId);
     const formOption = formId.options;
+    // console.log(formOption);
+    let imgKanap = document.querySelector(".item__img").imageUrl;
+    let altImg = document.querySelector(".item__img").altTxt;
+    let priceKanap = document.querySelector("#price").textContent;
+    let nameKanap = document.querySelector("#title").textContent;
 
+   
     let productOptions = {
         id: id,
         quantity: selectedQuantity.value,
-        color: selectedColor.value
+        color: selectedColor.value,
+        name: nameKanap,
+        image : imgKanap,
+        altTxt : altImg,
       };
 
-      console.log(productOptions);
+       console.log(productOptions);
 
 //---------------------------------------- Local Storage --------------------------------------------//
 
@@ -84,9 +95,9 @@ if(productsInLocalStorage){
 }
 else{
     productsInLocalStorage = [];
-    addProductInLocalStorage();
-     
+    addProductInLocalStorage();   
 }
+
     
 });
 
