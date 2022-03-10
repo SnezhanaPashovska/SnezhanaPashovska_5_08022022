@@ -10,49 +10,61 @@ const id = params.get("id");
 const selectedColor = document.querySelector("#colors");
 const selectedQuantity = document.querySelector("#quantity");
 //console.log(id);
+let products ="";
 
-let products = fetch(`http://localhost:3000/api/products/${id}`)
+getProducts();
 
+//----------------------------Processing data from API----------------------------------------------//
+
+function getProducts(){
+    fetch(`http://localhost:3000/api/products/${id}`)
     .then(function(res){
         if(res.ok){
             return res.json();
         }
     })
-//----------------------------Processing data from API----------------------------------------------//
-    .then (function (products){
-
-        //Image
-        let item = document.querySelector(".item__img");
-        item.innerHTML += `
-            <img src="${products.imageUrl}" alt="${products.altTxt}">`;
-
-        //Title
-        let title = document.getElementById("title");
-        title.innerHTML += `${products.name}`;
-
-        //Price
-        let price = document.getElementById("price");
-        price.innerHTML += `${products.price}`;
-
-        //Description
-        let description = document.getElementById("description");
-        description.innerHTML += `${products.description}`;
-
-        //Color option
-        for (let i = 0; i < products.colors.length; i++) {
-            colorOption = document.getElementById("colors");
-            colorOption.innerHTML += `
-            <option value="${products.colors[i]}">${products.colors[i]}</option>`;
-          }
-
-       //console.log(products);  
-         
+    .then (async function(resultAPI){
+        products = await resultAPI;
+        console.table(products);
+        if (products){
+            getPost(products);
+        }
     })
-.catch(err => console.log("Error", err));
+    .catch(err => console.log("Error", err));
+}
+   
+//-----------------------------------------DOM elements------------------------------------------//
+
+  function getPost(products){
+      //Image
+      let item = document.querySelector(".item__img");
+      item.innerHTML += `
+          <img src="${products.imageUrl}" alt="${products.altTxt}">`;
+
+      //Title
+      let title = document.getElementById("title");
+      title.innerHTML += `${products.name}`;
+
+      //Price
+      let price = document.getElementById("price");
+      price.innerHTML += `${products.price}`;
+
+      //Description
+      let description = document.getElementById("description");
+      description.innerHTML += `${products.description}`;
+
+      //Color option
+      for (let i = 0; i < products.colors.length; i++) {
+          colorOption = document.getElementById("colors");
+          colorOption.innerHTML += `
+          <option value="${products.colors[i]}">${products.colors[i]}</option>`;
+        }
+
+     //console.log(products);
+  }  
+
 //const idSelectedProduct = products.find((Element) => Element.id === _id);
 //console.log(idSelectedProduct);
-
-
 
 //------------------------------- Add items in cart ---------------------------------------------------//
 
@@ -63,20 +75,18 @@ addToCart.addEventListener("click", (e)=>{
     // console.log(formId);
     const formOption = formId.options;
     // console.log(formOption);
-    let imgKanap = document.querySelector(".item__img").imageUrl;
-    let altImg = document.querySelector(".item__img").altTxt;
-    let priceKanap = document.querySelector("#price").textContent;
-    let nameKanap = document.querySelector("#title").textContent;
-
    
+    
     let productOptions = {
         id: id,
         quantity: selectedQuantity.value,
         color: selectedColor.value,
-        name: nameKanap,
-        image : imgKanap,
-        altTxt : altImg,
+        name: products.name,
+        image : products.imageUrl,
+        altTxt: products.altTxt
       };
+
+      //console.log(imgKanap);
 
        console.log(productOptions);
 
@@ -97,7 +107,7 @@ else{
     productsInLocalStorage = [];
     addProductInLocalStorage();   
 }
-
+//alert("produit mis dans le panier");
     
 });
 
