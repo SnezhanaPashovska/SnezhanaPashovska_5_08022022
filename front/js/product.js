@@ -35,36 +35,33 @@ function getProducts(){
    
 //-----------------------------------------DOM elements------------------------------------------//
 
-  function getPost(products){
-      //Image
-      let item = document.querySelector(".item__img");
-      item.innerHTML += `
-          <img src="${products.imageUrl}" alt="${products.altTxt}">`;
+function getPost(products){
+    //Image
+    let item = document.querySelector(".item__img");
+    item.insertAdjacentHTML( "afterbegin", `
+        <img src="${products.imageUrl}" alt="${products.altTxt}">`);
 
-      //Title
-      let title = document.getElementById("title");
-      title.innerHTML += `${products.name}`;
+    //Title
+    let title = document.getElementById("title");
+    title.insertAdjacentHTML("afterbegin", `${products.name}`);
 
-      //Price
-      let price = document.getElementById("price");
-      price.innerHTML += `${products.price}`;
+    //Price
+    let price = document.getElementById("price");
+    price.insertAdjacentHTML("afterbegin", `${products.price}`);
 
-      //Description
-      let description = document.getElementById("description");
-      description.innerHTML += `${products.description}`;
+    //Description
+    let description = document.getElementById("description");
+    description.insertAdjacentHTML("afterbegin", `${products.description}`);
 
-      //Color option
-      for (let i = 0; i < products.colors.length; i++) {
-          colorOption = document.getElementById("colors");
-          colorOption.innerHTML += `
-          <option value="${products.colors[i]}">${products.colors[i]}</option>`;
-        }
+    //Color option
+    for (let i = 0; i < products.colors.length; i++) {
+        colorOption = document.getElementById("colors");
+        colorOption.insertAdjacentHTML("beforeend", `
+        <option value="${products.colors[i]}">${products.colors[i]}</option>`);
+      }
 
-     //console.log(products);
-  }  
-
-//const idSelectedProduct = products.find((Element) => Element.id === _id);
-//console.log(idSelectedProduct);
+   //console.log(products);
+};
 
 //------------------------------- Add items in cart ---------------------------------------------------//
 
