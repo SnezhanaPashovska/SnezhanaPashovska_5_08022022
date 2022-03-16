@@ -65,48 +65,72 @@ function getPost(products){
 
 //------------------------------- Add items in cart ---------------------------------------------------//
 
-const addToCart = document.querySelector("#addToCart");
-addToCart.addEventListener("click", (e)=>{
-    e.preventDefault();
-    const formId = document.querySelector("#colors");
-    // console.log(formId);
-    const formOption = formId.options;
-    // console.log(formOption);
-   
+    const addToCart = document.querySelector("#addToCart");
+    addToCart.addEventListener("click", (e)=>{
+        e.preventDefault();
+
+        if (selectedQuantity.value > 0 && selectedQuantity.value <=100 && selectedQuantity.value !=0){
+
+            let pickQuantity = selectedQuantity.value;
+            let pickColor = selectedColor.value;
+        //const formId = document.querySelector("#colors");
+        // console.log(formId);
+        //const formOption = formId.options;
+        // console.log(formOption);
     
-    let productOptions = {
-        id: id,
-        quantity: selectedQuantity.value,
-        color: selectedColor.value,
-        name: products.name,
-        image : products.imageUrl,
-        altTxt: products.altTxt
-      };
+        
+        let productOptions = {
+            id: id,
+            quantity: selectedQuantity.value,
+            color: selectedColor.value,
+            nameKanap: products.name,
+            image : products.imageUrl,
+            altTxt: products.altTxt
+        };
 
-      //console.log(imgKanap);
+            console.log(productOptions);
 
-       console.log(productOptions);
+    //---------------------------------------- Local Storage --------------------------------------------//
 
-//---------------------------------------- Local Storage --------------------------------------------//
+    let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
 
-let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
-//JSON.parse to convert data in JSON format in the Local storage that is in java script object
+    if(productsInLocalStorage){
+        const resultFind = productsInLocalStorage.find(
+            (el) => el.id === id && el.color === pickColor);
 
-const addProductInLocalStorage = () => {
-    productsInLocalStorage.push(productOptions);
-    localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-};
+            //---if the product is already in the cart----//
+            if(resultFind){
+                let newQuantity = 
+                parseInt(productOptions.quantity) + parseInt(resultFind.quantity);
+                resultFind.quantity = newQuantity;
+                localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
+                console.table(productsInLocalStorage);
+                alert("update");
 
-if(productsInLocalStorage){
-    addProductInLocalStorage();
-}
-else{
-    productsInLocalStorage = [];
-    addProductInLocalStorage();   
-}
-//alert("produit mis dans le panier");
+            //---if the product is not in the cart ---//   
+
+            } else {
+                productsInLocalStorage.push(productOptions);
+                localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
+                console.table(productsInLocalStorage);
+
+                alert("added");  
+            }
+
+            //-----if the cart is empty---//
+    } else {
+        productsInLocalStorage = [];
+        productsInLocalStorage.push(productOptions);
+        localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
+        console.table(productsInLocalStorage);
+    }}
+    });
+
+
     
-});
+
+
+
 
 
 

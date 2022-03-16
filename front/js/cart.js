@@ -71,34 +71,80 @@ function cartItems(){
       cartItems();
 
 //-----------------------------------------------Delete button---------------------------------//
-function deleteProduct(){
+  function deleteProduct(){
+   
+  let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
+  let btnDelete = document.querySelectorAll(".deleteItem");
+  console.log(btnDelete);
+
+
+    for (let i = 0; i < btnDelete.length; i++){
+      
+      btnDelete[i].addEventListener("click", (e) => {
+       e.preventDefault();
+
+        let deleteId = productsInLocalStorage[i].id;
+        console.log(deleteId);
+        let deleteColor = productsInLocalStorage[i].color;
+        console.log(deleteColor);
+
+        productsInLocalStorage = productsInLocalStorage.filter(el => el.id !== deleteId || el.color !== deleteColor);
+        console.log(productsInLocalStorage);
+
+        productsInLocalStorage.map(p => delete p.price)
+        localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
+
+        if (productsInLocalStorage.length == 0){
+          localStorage.removeItem("item");
+        }
+
+        alert ("supprimé");
+        location.reload();
+      
+      });
+    }; 
+}; 
+deleteProduct();
+ 
+
+  /* function deleteProduct(){
+  
+  for (let item of productsInLocalStorage){
+  let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
   let btnDelete = document.querySelector(".deleteItem");
-
-  for (let i = 0; i < btnDelete.length; i++){
-    btnDelete[i].addEventlistener("click", (event) => {
-      event.preventDefault();
-
-      let deleteId = productsInLocalStorage[i].id;
-      console.log("delete"+ deleteId);
-      let deleteColor = productsInLocalStorage[i].color;
-
+  console.log(btnDelete);
+  btnDelete.addEventListener("click", (e)=>{
+    e.preventDefault();
+      let deleteId = productsInLocalStorage.id;
+      console.log(deleteId);
+      let deleteColor = productsInLocalStorage.color;
+      console.log(deleteColor);
       productsInLocalStorage = productsInLocalStorage.filter(el => el.id !== deleteId || el.color !== deleteColor);
       console.log(productsInLocalStorage);
-
       localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-
       alert ("supprimé");
       location.reload();
-    
     })
-  } 
-}
- deleteProduct();
-console.log(deleteProduct);
+    }
+  };
+  deleteProduct();  */
+//console.log(deleteProduct);
 
-//----------------------------------------------Change quantity--------------------------------------------//
+ /* function deleteProduct(){
+    let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
+    let deleteId = productsInLocalStorage.id;
+    let deleteColor = productsInLocalStorage.color;
+    productsInLocalStorage = productsInLocalStorage.filter(el => el.id !== deleteId || el.color !== deleteColor);
+    localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
+};
+    const btnDelete = document.querySelector(".deleteItem");
+    btnDelete.forEach(deleteProduct =>{
+    btnDelete.addEventListener("click", (e)=>{
+    e.preventDefault();
+    
+      alert ("supprimé")
+    })
+  });  */
 
 
-                
-                
-                 
+
