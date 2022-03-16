@@ -9,6 +9,7 @@ console.log(params);
 const id = params.get("id");
 const selectedColor = document.querySelector("#colors");
 const selectedQuantity = document.querySelector("#quantity");
+const nameKanap = document.querySelector("#title");
 //console.log(id);
 let products ="";
 
@@ -83,7 +84,7 @@ function getPost(products){
             id: id,
             quantity: selectedQuantity.value,
             color: selectedColor.value,
-            nameKanap: products.name,
+            name: nameKanap.textContent,
             image : products.imageUrl,
             altTxt: products.altTxt
         };
