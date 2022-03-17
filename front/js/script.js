@@ -11,19 +11,19 @@ const getProducts = fetch ("http://localhost:3000/api/products")
     articles.forEach(products =>{
 
       const theProduct = document.getElementById("items");
-      theProduct.innerHTML += `
+      theProduct.insertAdjacentHTML( "afterbegin", `
           <a href="./product.html?id=${products._id}">
             <article>
               <img src="${products.imageUrl}" alt="${products.altTxt}">
               <h3 class="productName">${products.name}</h3>
               <p class="productDescription">${products.description}</p>
             </article>
-          </a>`;
-    });
+          </a>`);
     // console.log(articles);
     // console.log(getProducts);
   })
-  .catch(err => console.log("Error", err));
+})
+.catch(err => console.log("Error", err));
   
   /* let products = {
     altTxt: products.al,

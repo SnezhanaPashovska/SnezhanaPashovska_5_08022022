@@ -1,27 +1,29 @@
+
 let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
 //console.table(productsInLocalStorage);
 //console.log('localStorage ='+productsInLocalStorage);
 const emptyCart = document.querySelector("#cart__items");
-
-//-----------------------------Retrieving the price-----------------------------------------------//
-let products ="";
-let getPrice = [];
-
-const fetchPrice = async () => {
-  await fetch("http://localhost:3000/api/products")
-  .then((res) => res.json())
-  .then((products) => {
-    getPrice = products;
-    //console.table(getPrice);
-    console.log(products);
-  })
-  .catch(err => console.log("Error", err));
-};
-
-fetchPrice();
- ///-------------------------------------------------------------------------------------------------//
+let cart = JSON.parse(localStorage.getItem("item"))
+  cart.sort(function compare(a, b) {
+    if (a.id > b.id) return 1;
+    if (a.colors > b.colors) return 1;
+  });
+  console.log(cart);
+  
+  let sumPrice = 0;
 
 
+//-----------------------------Retrieving the price from API-----------------------------------------------//
+
+let items = JSON.parse(localStorage.getItem("item"));
+for (let i = 0; i < items.length; i++) {
+  async function fetchJsonProduct() {
+    const response = await fetch(
+      `http://localhost:3000/api/products/${items[i].id}`
+    );
+    return await response.json();
+  }
+//-------------------------Items in cart-------------------------//
 //if the cart is empty
 function cartItems(){
 
@@ -34,12 +36,15 @@ function cartItems(){
   } else {
   
     //console.log(productsInLocalStorage);
-  
+    fetchJsonProduct().then((info) => {
+      /* console.log(info); */
     const itemsInCart = document.querySelector("#cart__items");
+    
     for(let item of productsInLocalStorage) {
-  
+   
+ ///--------------------------------DOM elements-----------------------------------------------------------------//
       let cartStructure = [];
-  
+
       itemsInCart.insertAdjacentHTML("afterend", `
               <article class="cart__item" data-id="${item.id}" data-color="${item.color}">
                       <div class="cart__item__img">
@@ -49,7 +54,7 @@ function cartItems(){
                         <div class="cart__item__content__description">
                           <h2>${item.name}</h2>
                           <p>${item.color}</p>
-                          <p>${products.price}€</p>
+                          <p>${info.price}€</p>
                         </div>
                         <div class="cart__item__content__settings">
                           <div class="cart__item__content__settings__quantity">
@@ -62,89 +67,48 @@ function cartItems(){
                         </div>
                       </div>
                     </article>`);
-                  }
-        //console.log(itemsInCart);
-        cartStructure = itemsInCart;
-        //console.log(cartStructure);
-      }}
-  
-      cartItems();
+  cartStructure = itemsInCart;
 
-//-----------------------------------------------Delete button---------------------------------//
-  function deleteProduct(){
-   
-  let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
-  let btnDelete = document.querySelectorAll(".deleteItem");
-  console.log(btnDelete);
+  }    
+         
+cartCheckout();
+function cartCheckout() {
+ //----Total quantity---//  
+  const selectedQuantity = document.querySelector(".itemQuantity");
+  let itemQuantity = selectedQuantity.value; 
+  console.log(itemQuantity);     
+  const quantityInDom = document.querySelector("#totalQuantity");
+  const totalQuantity = cart.reduce((acc, quantity) => acc + quantity); 
+  console.log(totalQuantity);
+                                                
+                                        
+  if (items.length != 0){
+      sumPrice = info.price * itemQuantity;
+      console.log(info.price);
+      console.log(itemQuantity);
+      quantityInDom.innerHTML = `${totalQuantity}`;
+      }
+      else{
+      sumPrice = 0
+      quantityInDom.innerHTML = "0";
+      }
+      //Total Price
+                                        
+      const priceInDOM = document.getElementById("totalPrice");
+      const totalPrice = sumPrice;
+      priceInDOM.innerHTML = `${totalPrice}`;
 
-
-    for (let i = 0; i < btnDelete.length; i++){
-      
-      btnDelete[i].addEventListener("click", (e) => {
-       e.preventDefault();
-
-        let deleteId = productsInLocalStorage[i].id;
-        console.log(deleteId);
-        let deleteColor = productsInLocalStorage[i].color;
-        console.log(deleteColor);
-
-        productsInLocalStorage = productsInLocalStorage.filter(el => el.id !== deleteId || el.color !== deleteColor);
-        console.log(productsInLocalStorage);
-
-        productsInLocalStorage.map(p => delete p.price)
-        localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-
-        if (productsInLocalStorage.length == 0){
-          localStorage.removeItem("item");
-        }
-
-        alert ("supprimé");
-        location.reload();
-      
-      });
-    }; 
-}; 
-deleteProduct();
- 
-
-  /* function deleteProduct(){
-  
-  for (let item of productsInLocalStorage){
-  let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
-  let btnDelete = document.querySelector(".deleteItem");
-  console.log(btnDelete);
-  btnDelete.addEventListener("click", (e)=>{
-    e.preventDefault();
-      let deleteId = productsInLocalStorage.id;
-      console.log(deleteId);
-      let deleteColor = productsInLocalStorage.color;
-      console.log(deleteColor);
-      productsInLocalStorage = productsInLocalStorage.filter(el => el.id !== deleteId || el.color !== deleteColor);
-      console.log(productsInLocalStorage);
-      localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-      alert ("supprimé");
-      location.reload();
-    })
+      }
     }
-  };
-  deleteProduct();  */
-//console.log(deleteProduct);
+  )}   
+}};
+cartItems();
 
- /* function deleteProduct(){
-    let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
-    let deleteId = productsInLocalStorage.id;
-    let deleteColor = productsInLocalStorage.color;
-    productsInLocalStorage = productsInLocalStorage.filter(el => el.id !== deleteId || el.color !== deleteColor);
-    localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-};
-    const btnDelete = document.querySelector(".deleteItem");
-    btnDelete.forEach(deleteProduct =>{
-    btnDelete.addEventListener("click", (e)=>{
-    e.preventDefault();
-    
-      alert ("supprimé")
-    })
-  });  */
+
+
+
+
+
 
 
 
