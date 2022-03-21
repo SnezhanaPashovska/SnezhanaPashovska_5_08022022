@@ -1,18 +1,14 @@
-const products = fetch ("http://localhost:3000/api/products")
-.then(function(res){
-if(res.ok){
-    return res.json();
-}
-})
-.then(products => {
-console.log('Success:', products); 
-})
-
-const productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
+let productsInLocalStorage = JSON.parse(localStorage.getItem("item"));
 console.table(productsInLocalStorage);
-//const productsInCart = document.querySelector(".cartAndFormContainer")
+const productsInCart = document.querySelector(".cartAndFormContainer")
+const orderButton = document.getElementById("order")
+//console.log(orderButton)
+orderButton.addEventListener('click', (event) => {
+    submitOrder(event)
+})
 const emptyCart = document.querySelector("#cart__items");
 const selectedQuantity = document.querySelector("#quantity");
+
 //if the cart is empty
 if(productsInLocalStorage === null){
   const noItems = `<p>Votre panier est vide</p>`;
@@ -36,15 +32,15 @@ function cartItems(){
    if(productsInLocalStorage !== 0) {
   
     //console.log(productsInLocalStorage);
-    fetchJsonProduct()
-
-    .then((info) => {
-      //console.log(info); 
+    fetchJsonProduct().then((info) => {
+      /* console.log(info); */
     const itemsInCart = document.querySelector("#cart__items");
     
     for(let item of productsInLocalStorage) {
    
  ///--------------------------------DOM elements-----------------------------------------------------------------//
+      let cartStructure = [];
+
       itemsInCart.insertAdjacentHTML("afterend", `
               <article class="cart__item" data-id="${info._id}" data-color="${item.color}">
                       <div class="cart__item__img">
@@ -67,73 +63,78 @@ function cartItems(){
                         </div>
                       </div>
                     </article>`);
-
-
-
-let totalQuantity = document.getElementById("totalQuantity");
-let totalPrice = document.getElementById("totalPrice");
-let productId = document.getElementsByClassName("data-id");
-let productColor = document.getElementsByClassName("data-color");
-let productQuantity = item.quantity;
-let productName = item.name;
-console.log(productQuantity);
+  cartStructure = itemsInCart;
+  }    
+         
+cartCheckout();
+function cartCheckout() {
+ //----Total quantity---//  
+  const selectedQuantity = document.querySelector(".itemQuantity");
+  let itemQuantity = Number(selectedQuantity.value) 
+  console.log(itemQuantity);     
+  const quantityInDom = document.querySelector("#totalQuantity");
   
-let productInfo = {
-  nameOfProduct: info.name,
-  idOfProduct: info._id,
-  colorOfProduct: info.colors,
-  priceOfProduct: info.price,
-  quantityOfProduct: item.quantity 
-}
-    //console.log(productInfo); 
+  const totalQuantity = Object.values(items).reduce((acc, {quantity}) => acc + quantity, 0);
+  console.log(totalQuantity);
    
-    console.log(info);
-    //console.log(item);
-    //console.log(productId);
-    function totals(){
-      
-      let sumQuantity = item.quantity;
-      let sumPrice = (productInfo.quantityOfProduct * productInfo.priceOfProduct);
-    
-      info._id == productId && productInfo.quantityOfProduct == productQuantity;
-      info._id == productId && productInfo.priceOfProduct == totalPrice; 
-      
-    
-      totalQuantity.innerHTML = sumQuantity;
-      totalPrice.innerHTML = sumPrice;
-    
-      console.log(sumQuantity);
-      console.log(sumPrice);
-      console.log(totalQuantity);
-    
+  productInfo = {
+    id: info._id,
+    quantity: selectedQuantity.value,
+    price: info.price,
+    color: info.colors,
+    name: info.name
+  }
+
+console.log(productInfo.price);
+/* console.log(info);  */
+                                                                                
+  if (items.length != 0){
+    for (let l = 0; l < productsInLocalStorage.length; l++){
+    function multiply(){
+
+       a = Number (productInfo.quantity);
+       b = Number (productInfo.price);
+       d = String (productInfo.id);
+       c = a * b;
+      /*  c = document.getElementById("totalPrice").value; */
+       /* c.innerHTML = `${c}`; */
+       sumPrice = c;
+       sumPrice = document.getElementById("totalPrice");
+       sumPrice.innerHTML = `${c}`;
+      /* console.log(a);
+      console.log(b);
+      console.log(c);
+      console.log(d);  */
     }
-    totals();
-        
-    } 
-}
+    multiply();
+  }
+    
+  } else{
+      sumPrice = 0
+      quantityInDom.innerHTML = "0";
+      }
+      //Total Price
+                                        
+      /* const priceInDOM = document.getElementById("totalPrice"); */
+      const totalPrice = sumPrice;
+      /* priceInDOM.innerHTML = `${totalPrice}`; */
 
-)} 
-}};cartItems()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      for (let j = 0; j < itemQuantity.length; j++){
+        totalQtt += itemQuantity;
+        totalQuantity = itemQuantity + itemQuantity;
+        let productTotalQuantity = document.querySelector("#totalQuantity");
+        productTotalQuantity.innerHTML = totalQtt;
+         console.log(totalQtt);
+         console.log(totalQuantity);
+      }
+    }
 
 
-  
+  }  
+)}   
+};
+};
+cartItems();
 
 
 

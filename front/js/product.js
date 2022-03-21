@@ -114,7 +114,6 @@ function getPost(products){
                 productsInLocalStorage.push(productOptions);
                 localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
                 console.table(productsInLocalStorage);
-
                 alert("added");  
             }
 
@@ -124,6 +123,7 @@ function getPost(products){
         productsInLocalStorage.push(productOptions);
         localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
         console.table(productsInLocalStorage);
+        alert("added");
     }}
     });
 

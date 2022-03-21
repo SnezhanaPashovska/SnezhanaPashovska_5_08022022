@@ -93,10 +93,10 @@ let productInfo = {
     function totals(){
       
       let sumQuantity = item.quantity;
-      let sumPrice = (productInfo.quantityOfProduct * productInfo.priceOfProduct);
+      let sumPrice = (productInfo[j].quantityOfProduct * productInfo[j].priceOfProduct);
     
-      info._id == productId && productInfo.quantityOfProduct == productQuantity;
-      info._id == productId && productInfo.priceOfProduct == totalPrice; 
+      info._id == productId && productInfo[j].quantityOfProduct == productQuantity;
+      info._id == productId && productInfo[j].priceOfProduct == totalPrice; 
       
     
       totalQuantity.innerHTML = sumQuantity;
