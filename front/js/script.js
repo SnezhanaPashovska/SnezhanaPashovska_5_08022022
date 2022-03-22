@@ -24,38 +24,7 @@ const getProducts = fetch ("http://localhost:3000/api/products")
   })
 })
 .catch(err => console.log("Error", err));
-  
-  /* let products = {
-    altTxt: products.al,
-    colors: [""],
-    description: "",
-    imageUrl: "",
-    name: "",
-    price: 0,
-    _id: ""
-  };  */
 
-      
-
-    
-
-
-
-//class products {
- // constructor (imageUrl, altTxt, name, description){
-   // this.image = imageUrl;
-    //this.alt = altTxt;
-    //this.name = name;
-    //this.description = description;
-  //} 
-//};
-
-//let myProducts = new products(imageUrl, altTxt, name, description);{
- // imageUrl: "http://localhost:3000/api/products/"+imageUrl;
- // altTxt: "";
-  //name: "";
-  //description: ""
-//}
 
 
 

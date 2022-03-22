@@ -70,7 +70,7 @@ function getPost(products){
     addToCart.addEventListener("click", (e)=>{
         e.preventDefault();
 
-        if (selectedQuantity.value > 0 && selectedQuantity.value <=100 && selectedQuantity.value !=0){
+        if ((selectedQuantity.value > 0 && selectedQuantity.value <= 100 && selectedQuantity.value !=0) && (selectedColor.value !== "")){
 
             let pickQuantity = selectedQuantity.value;
             let pickColor = selectedColor.value;
@@ -79,7 +79,6 @@ function getPost(products){
         //const formOption = formId.options;
         // console.log(formOption);
     
-        
         let productOptions = {
             id: id,
             quantity: selectedQuantity.value,

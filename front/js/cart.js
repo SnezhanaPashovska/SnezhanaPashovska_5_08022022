@@ -8,7 +8,6 @@ console.table(productsInLocalStorage);
 let calculateTotalQuantity =[];
 let totalQuantity = document.getElementById("totalQuantity");
 
-
 //variables to calculate the total price of products in the cart//
 
 let calculateTotalPrice = [];
