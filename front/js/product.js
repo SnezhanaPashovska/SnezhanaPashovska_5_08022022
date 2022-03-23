@@ -70,6 +70,15 @@ function getPost(products){
     addToCart.addEventListener("click", (e)=>{
         e.preventDefault();
 
+//If a color or quantity hasn't been chosen
+        if(parseInt(quantity.value) === 0 || colors.value ===""){
+            return alert("Veuillez compléter chaque champ correctement s'il vous plaît ");
+            
+        } else  if (parseInt(quantity.value) >100){
+            return alert("Choisissez une quantité entre 1 et 100");
+            
+        };
+
         if ((selectedQuantity.value > 0 && selectedQuantity.value <= 100 && selectedQuantity.value !=0) && (selectedColor.value !== "")){
 
             let pickQuantity = selectedQuantity.value;
@@ -105,26 +114,28 @@ function getPost(products){
                 resultFind.quantity = newQuantity;
                 localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
                 console.table(productsInLocalStorage);
-                alert("update");
+                alert("La quantité a été mise à jour");
 
-            //---if the product is not in the cart ---//   
+            //if the product is not in the cart //   
 
             } else {
                 productsInLocalStorage.push(productOptions);
                 localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
                 console.table(productsInLocalStorage);
-                alert("added");  
+                alert("L'article a été ajouté au panier");  
             }
 
-            //-----if the cart is empty---//
+            //if the cart is empty//
     } else {
         productsInLocalStorage = [];
+
         productsInLocalStorage.push(productOptions);
         localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
         console.table(productsInLocalStorage);
-        alert("added");
-    }}
-    });
+        alert("L'article a été ajouté au panier");
+    }
+}
+});
 
 
     
