@@ -86,20 +86,24 @@ function deleteProduct(){
 const deleteItem = document.querySelectorAll(".deleteItem");
 
 // For each loop for the querySelectorAll, every delete button listens to an event
-deleteItem.forEach(function (del) {
+ deleteItem.forEach(function (del) {
   del.addEventListener("click", function() {  
 
     let idDelete = this.closest("[data-id]").dataset.id ; 
     let colorDelete = this.closest("[data-color]").dataset.color;
     let indexDelete = productsInLocalStorage.findIndex( x => x.id == idDelete && x.color == colorDelete); 
-    productsInLocalStorage.splice(indexDelete,1); 
+    productsInLocalStorage.splice(indexDelete, 1); 
     localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-    alert("L'article a été supprimé")
+    //alert("L'article a été supprimé")
+    console.log(indexDelete)
     location.reload();
-      }
+    }  
     )
   })
-}
+  
+} 
+
+
 //------------------------Modify quantity-----------------------------------------//
 
 function ModifyQuantity() {
@@ -127,7 +131,7 @@ function ModifyQuantity() {
 console.error('Error', error);
 
     });
-  });
+  }); 
 }
 //-------------------------------------Order form---------------------------------------//
 
@@ -160,6 +164,12 @@ const formValues = {
 const theName = formValues.firstName;
 if(namesRegExp.test(theName)){
 }
+
+else if ((formValues.firstName) == ""){
+  const emptyFirstName = document.getElementById("firstNameErrorMsg")
+  emptyFirstName.insertAdjacentHTML("afterend", `<p>Ce champ est vide</p>`)
+}
+
 else{
 const firstNameError = document.getElementById("firstNameErrorMsg");
 firstNameError.insertAdjacentHTML("afterend", `<p>Le prénom n'est pas valide</p>`);
@@ -170,6 +180,12 @@ console.log(theName);
 const theLastName = formValues.lastName;
 if(namesRegExp.test(theLastName)){
 }
+
+else if ((formValues.lastName) == ""){
+  const emptyLastName = document.getElementById("lastNameErrorMsg")
+  emptyLastName.insertAdjacentHTML("afterend", `<p>Ce champ est vide</p>`)
+}
+
 else{
   const lastNameError = document.getElementById("lastNameErrorMsg");
   lastNameError.insertAdjacentHTML("afterend", `<p>Le nom n'est pas valide</p>`)
@@ -178,6 +194,11 @@ else{
 //The address
 const theAddress = formValues.address;
 if(namesRegExp.test(theAddress)){
+}
+
+else if ((formValues.address) == ""){
+  const emptyAddress = document.getElementById("addressErrorMsg")
+  emptyAddress.insertAdjacentHTML("afterend", `<p>Ce champ est vide</p>`)
 }
 else{
   const addressError = document.getElementById("addressErrorMsg");
@@ -188,6 +209,11 @@ else{
 const theCity = formValues.city;
 if(namesRegExp.test(theCity)){
 }
+
+else if ((formValues.city) == ""){
+  const emptyCity = document.getElementById("cityErrorMsg")
+  emptyCity.insertAdjacentHTML("afterend", `<p>Ce champ est vide</p>`)
+}
 else{
   const cityError = document.getElementById("cityErrorMsg");
   cityError.insertAdjacentHTML("afterend", `<p>Le nom de la ville n'est pas valide</p>`)
@@ -196,6 +222,11 @@ else{
 //The Email
 const theEmail = formValues.email
 if(emailRegExp.test(theEmail)){ 
+}
+
+else if ((formValues.email) == ""){
+  const emptyEmail = document.getElementById("emailErrorMsg")
+  emptyEmail.insertAdjacentHTML("afterend", `<p>Ce champ est vide</p>`)
 }
 else{
   const emailError = document.getElementById("emailErrorMsg");
