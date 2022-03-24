@@ -28,8 +28,7 @@ if(productsInLocalStorage === null){
   console.log (noItems);
 }
 //Retrieving the price from API//
- else { 
-      //console.log(info); 
+ else {  
     productsInLocalStorage.forEach((element) => {
       fetch( `http://localhost:3000/api/products/${element.id}`)
             .then((elements) =>  elements.json())
@@ -65,7 +64,7 @@ if(productsInLocalStorage === null){
                     document
                       .getElementById("cart__items")
                       .insertAdjacentHTML("afterbegin", itemsInCart);
-                      deleteProduct()
+                      //deleteProduct()
                       ModifyQuantity()
 
 //------------------------Total quantity---------------//
@@ -82,27 +81,23 @@ totalPrice.innerHTML = calculateTotalPrice.reduce(reducer,0);
 
 //----------------------Delete a product from the cart and from the local storage------------------//
 
-function deleteProduct(){
-const deleteItem = document.querySelectorAll(".deleteItem");
+const deletedItem = document.getElementsByClassName("deleteItem");
 
-// For each loop for the querySelectorAll, every delete button listens to an event
- deleteItem.forEach(function (del) {
-  del.addEventListener("click", function() {  
+for(let button = 0; button < deletedItem.length; button++){
+                    
+  deletedItem[button].addEventListener("click", (eventButton) => {
+    eventButton.preventDefault();
 
-    let idDelete = this.closest("[data-id]").dataset.id ; 
-    let colorDelete = this.closest("[data-color]").dataset.color;
-    let indexDelete = productsInLocalStorage.findIndex( x => x.id == idDelete && x.color == colorDelete); 
-    productsInLocalStorage.splice(indexDelete, 1); 
-    localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-    //alert("L'article a été supprimé")
-    console.log(indexDelete)
-    location.reload();
-    }  
-    )
+  const parent = eventButton.target.closest("[data-id]");
+
+  let newLocalStorage = productsInLocalStorage.filter( 
+  (productLocal)=> productLocal.id !== parent.dataset.id || productLocal.color !== parent.dataset.color);
+
+  localStorage.setItem("item", JSON.stringify(newLocalStorage));
+  alert ("L'article a été supprimé du panier");
+  location.reload();
   })
-  
-} 
-
+  };
 
 //------------------------Modify quantity-----------------------------------------//
 
@@ -293,14 +288,6 @@ fillInForm("lastName");
 fillInForm("address");
 fillInForm("city");
 fillInForm("email");
-
-
-
-
-
-
-
-
 
 
   
