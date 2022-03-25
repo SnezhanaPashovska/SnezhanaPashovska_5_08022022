@@ -64,7 +64,6 @@ if(productsInLocalStorage === null){
                     document
                       .getElementById("cart__items")
                       .insertAdjacentHTML("afterbegin", itemsInCart);
-                      //deleteProduct()
                       ModifyQuantity()
 
 //------------------------Total quantity---------------//
@@ -81,11 +80,11 @@ totalPrice.innerHTML = calculateTotalPrice.reduce(reducer,0);
 
 //----------------------Delete a product from the cart and from the local storage------------------//
 
-const deletedItem = document.getElementsByClassName("deleteItem");
+const deleteItem = document.getElementsByClassName("deleteItem");
 
-for(let button = 0; button < deletedItem.length; button++){
+for(let button = 0; button < deleteItem.length; button++){
                     
-  deletedItem[button].addEventListener("click", (eventButton) => {
+  deleteItem[button].addEventListener("click", (eventButton) => {
     eventButton.preventDefault();
 
   const parent = eventButton.target.closest("[data-id]");
@@ -111,10 +110,6 @@ function ModifyQuantity() {
       let colorChange = this.closest("[data-color]").dataset.color;
       let newQuantity = parseInt(this.value);
       let indexChange = productsInLocalStorage.findIndex( x => x.id == idChange && x.color == colorChange);
-      /* console.log(newQuantity);
-      console.log(indexChange);
-      console.log(idChange);
-      console.log(colorChange); */
       productsInLocalStorage[indexChange].quantity = newQuantity;
       localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
       location.reload();
@@ -134,17 +129,20 @@ console.error('Error', error);
 
 const form = document.querySelector(".cart__order__form");
 console.log(form)
+
 // RegExp
 let namesRegExp = new RegExp(/^[a-zA-Zàâäéèêëïîôöùûüç' -]{3,}$/);
 let addressRegExp = new RegExp(/^[0-9]{1,4}[a-zA-Z0-9àâäéèêëïîôöùûüç '.,-]{3,}$/);
 let cityRegExp = new RegExp(/^[a-zA-Z0-9àâäéèêëïîôöùûüç' -]{3,60}$/);
 let emailRegExp = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
+//Event listener for the "order" button
+
 const orderButton = document.querySelector("#order");
 orderButton.addEventListener("click", (e) => {
 e.preventDefault();
 
-//Retrieving of the form values to add them to the local storage
+//Adding form values to the local Storage
 const formValues = {
   firstName: document.querySelector("#firstName").value,
   lastName: document.querySelector("#lastName").value,
@@ -155,7 +153,7 @@ const formValues = {
 
 //-----------------------------------Control of validation of the form--------------------------//
 
-//The name
+//---The name---//
 const theName = formValues.firstName;
 if(namesRegExp.test(theName)){
 }
@@ -169,9 +167,8 @@ else{
 const firstNameError = document.getElementById("firstNameErrorMsg");
 firstNameError.insertAdjacentHTML("afterend", `<p>Le prénom n'est pas valide</p>`);
 }
-console.log(theName);
 
-//The last name
+//---The last name---//
 const theLastName = formValues.lastName;
 if(namesRegExp.test(theLastName)){
 }
@@ -186,7 +183,7 @@ else{
   lastNameError.insertAdjacentHTML("afterend", `<p>Le nom n'est pas valide</p>`)
 }
 
-//The address
+//---The address---//
 const theAddress = formValues.address;
 if(namesRegExp.test(theAddress)){
 }
@@ -200,7 +197,7 @@ else{
   addressError.insertAdjacentHTML("afterend", `<p>L'adresse n'est pas valide</p>`)
 }
 
-//The city
+//---The city---//
 const theCity = formValues.city;
 if(namesRegExp.test(theCity)){
 }
@@ -214,7 +211,7 @@ else{
   cityError.insertAdjacentHTML("afterend", `<p>Le nom de la ville n'est pas valide</p>`)
 }
 
-//The Email
+//---The Email---//
 const theEmail = formValues.email
 if(emailRegExp.test(theEmail)){ 
 }
@@ -230,18 +227,21 @@ else{
 
 localStorage.setItem("formValues", JSON.stringify(formValues));
 
-//Send data to server
+
+//---Send data to server---//
 const sendValues = {
   productsInLocalStorage,
   formValues
 }
-console.log("sendValues");
-console.log(sendValues);
 
 let idProduct = [];
 for(let pro = 0; pro < productsInLocalStorage.length; pro++){
 idProduct.push(productsInLocalStorage[pro].id);
-}
+if(productsInLocalStorage == null || productsInLocalStorage == 0){
+  console.log("Oops... votre panier est vide!")
+}}
+
+//---Control of the cart before placing an order---//
 
 const order = {
   products: idProduct,
@@ -249,8 +249,8 @@ const order = {
 };
 console.log(order);
 
-
-fetch("http://localhost:3000/api/products/order", {
+function sendToServer()
+{fetch("http://localhost:3000/api/products/order", {
   method: "POST",
   body: JSON.stringify(order),
   headers: {
@@ -268,26 +268,42 @@ fetch("http://localhost:3000/api/products/order", {
 .catch((error)=>{
   console.error(error);
   alert("Il y a un problème avec le serveur");
-})
+})}
+
+//---Control of the form before sending to server---//
+
+if((namesRegExp.test(theName)) && (namesRegExp.test(theLastName)) && (addressRegExp.test(theAddress)) && (cityRegExp.test(theCity)) && (emailRegExp.test(theEmail))){
+
+  localStorage.setItem("formValues", JSON.stringify(formValues));
+  alert("Commande validé")
+
+  sendToServer();
+}else{
+  console.log("Veuillez bien remplir le formulaire");
+  alert("Veuillez bien remplir le formulaire")
+}
 });
-//console.log(orderButton);
+
+//---Automatically fill in form with the data saved in the local Storage--//
 
 const dataLocalStorage = localStorage.getItem("formValues");
 const dataLocalStorageObject = JSON.parse(dataLocalStorage);
-console.log(dataLocalStorage);
-console.log(dataLocalStorageObject);
-
-//Fill in the form automatically
 
 function fillInForm(input){
-  document.querySelector(`#${input}`).value = dataLocalStorageObject[input];
-};
+
+document.querySelector(`#${input}`).value = dataLocalStorageObject[input];
+console.log(dataLocalStorageObject)}
+
 
 fillInForm("firstName");
 fillInForm("lastName");
 fillInForm("address");
 fillInForm("city");
 fillInForm("email");
+
+
+
+
 
 
   

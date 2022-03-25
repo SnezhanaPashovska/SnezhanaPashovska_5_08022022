@@ -1,10 +1,10 @@
 const queryStringUrlId = window.location.search;
 
 const theId = queryStringUrlId.slice(4);
-console.log(theId);
+//console.log(theId);
 
 const params = new URLSearchParams(queryStringUrlId);
-console.log(params);
+//console.log(params);
 
 const id = params.get("id");
 const selectedColor = document.querySelector("#colors");
@@ -26,7 +26,7 @@ function getProducts(){
     })
     .then (async function(resultAPI){
         products = await resultAPI;
-        console.table(products);
+        //console.table(products);
         if (products){
             getPost(products);
         }
@@ -83,10 +83,6 @@ function getPost(products){
 
             let pickQuantity = selectedQuantity.value;
             let pickColor = selectedColor.value;
-        //const formId = document.querySelector("#colors");
-        // console.log(formId);
-        //const formOption = formId.options;
-        // console.log(formOption);
     
         let productOptions = {
             id: id,
@@ -97,7 +93,7 @@ function getPost(products){
             altTxt: products.altTxt
         };
 
-            console.log(productOptions);
+            //console.log(productOptions);
 
     //---------------------------------------- Local Storage --------------------------------------------//
 
@@ -107,31 +103,31 @@ function getPost(products){
         const resultFind = productsInLocalStorage.find(
             (el) => el.id === id && el.color === pickColor);
 
-            //---if the product is already in the cart----//
+            //---if the product is already in the cart---//
             if(resultFind){
                 let newQuantity = 
                 parseInt(productOptions.quantity) + parseInt(resultFind.quantity);
                 resultFind.quantity = newQuantity;
                 localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-                console.table(productsInLocalStorage);
+                //console.table(productsInLocalStorage);
                 alert("La quantité a été mise à jour");
 
-            //if the product is not in the cart //   
+            //---if the product is not in the cart--- //   
 
             } else {
                 productsInLocalStorage.push(productOptions);
                 localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-                console.table(productsInLocalStorage);
+                //console.table(productsInLocalStorage);
                 alert("L'article a été ajouté au panier");  
             }
 
-            //if the cart is empty//
+            //---if the cart is empty---//
     } else {
         productsInLocalStorage = [];
 
         productsInLocalStorage.push(productOptions);
         localStorage.setItem("item", JSON.stringify(productsInLocalStorage));
-        console.table(productsInLocalStorage);
+        //console.table(productsInLocalStorage);
         alert("L'article a été ajouté au panier");
     }
 }
