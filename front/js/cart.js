@@ -8,7 +8,7 @@ console.table(productsInLocalStorage);
 let calculateTotalQuantity =[];
 let totalQuantity = document.getElementById("totalQuantity");
 
-//variables to calculate the total price of products in the cart//
+//Variables to calculate the total price of products in the cart//
 
 let calculateTotalPrice = [];
 let totalPrice =document.getElementById("totalPrice");
@@ -235,11 +235,14 @@ const sendValues = {
 }
 
 let idProduct = [];
-for(let pro = 0; pro < productsInLocalStorage.length; pro++){
-idProduct.push(productsInLocalStorage[pro].id);
 if(productsInLocalStorage == null || productsInLocalStorage == 0){
   console.log("Oops... votre panier est vide!")
-}}
+  alert("Oops... votre panier est vide!");
+  for(let pro = 0; pro < productsInLocalStorage.length; pro++){
+    idProduct.push(productsInLocalStorage[pro].id);
+    }
+}
+
 
 //---Control of the cart before placing an order---//
 
